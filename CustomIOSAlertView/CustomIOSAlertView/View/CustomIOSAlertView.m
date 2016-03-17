@@ -14,7 +14,7 @@
 
 const static CGFloat kCustomIOSAlertViewDefaultButtonHeight       = 45;
 const static CGFloat kCustomIOSAlertViewDefaultButtonSpacerHeight = 0.3f;
-const static CGFloat kCustomIOSAlertViewCornerRadius              = 15;
+const static CGFloat kCustomIOSAlertViewCornerRadius              = 13;
 
 @implementation CustomIOSAlertView
 
@@ -140,15 +140,15 @@ UIColor *divColor;
     // This is the dialog's container; we attach the custom content and the buttons to this one
     UIView *dialogContainer = [[UIView alloc] initWithFrame:CGRectMake((screenSize.width - dialogSize.width) / 2, (screenSize.height - dialogSize.height) / 2, dialogSize.width, dialogSize.height)];
     
-    dialogContainer.backgroundColor = [UIColor whiteColor];
+    dialogContainer.backgroundColor = [UIColor colorWithRed:249.f/255 green:249.f/255 blue:249.f/255 alpha:1.f];
     CGFloat cornerRadius = kCustomIOSAlertViewCornerRadius;
     
     dialogContainer.layer.cornerRadius = cornerRadius;
-    dialogContainer.layer.shadowRadius = cornerRadius + 5;
-    dialogContainer.layer.shadowOpacity = 0.1f;
-    dialogContainer.layer.shadowOffset = CGSizeMake(0 - (cornerRadius+5)/2, 0 - (cornerRadius+5)/2);
-    dialogContainer.layer.shadowColor = [UIColor blackColor].CGColor;
-    dialogContainer.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:dialogContainer.bounds cornerRadius:dialogContainer.layer.cornerRadius].CGPath;
+    //    dialogContainer.layer.shadowRadius = cornerRadius + 5;
+    //    dialogContainer.layer.shadowOpacity = 0.1f;
+    //    dialogContainer.layer.shadowOffset = CGSizeMake(0 - (cornerRadius+5)/2, 0 - (cornerRadius+5)/2);
+    //    dialogContainer.layer.shadowColor = [UIColor blackColor].CGColor;
+    //    dialogContainer.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:dialogContainer.bounds cornerRadius:dialogContainer.layer.cornerRadius].CGPath;
     
     // There is a line above the button
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, dialogContainer.bounds.size.height - buttonHeight - buttonSpacerHeight, dialogContainer.bounds.size.width, buttonSpacerHeight)];
