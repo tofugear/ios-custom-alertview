@@ -46,7 +46,6 @@
 
     // Modify the parameters
     [alertView setButtonTitles:[NSMutableArray arrayWithObjects:@"Close1", @"Close2", @"Close3", nil]];
-    [alertView setDelegate:self];
     
     // You may use a Block, rather than a delegate.
     [alertView setOnButtonTouchUpInside:^(CustomIOSAlertView *alertView, int buttonIndex) {
@@ -55,15 +54,10 @@
     }];
     
     [alertView setUseMotionEffects:true];
+    
 
     // And launch the dialog
     [alertView show];
-}
-
-- (void)customIOS7dialogButtonTouchUpInside: (CustomIOSAlertView *)alertView clickedButtonAtIndex: (NSInteger)buttonIndex
-{
-    NSLog(@"Delegate: Button at position %d is clicked on alertView %d.", (int)buttonIndex, (int)[alertView tag]);
-    [alertView close];
 }
 
 - (UIView *)createDemoView
