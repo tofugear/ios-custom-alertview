@@ -12,14 +12,15 @@
 #import "CustomIOSAlertView.h"
 #import <QuartzCore/QuartzCore.h>
 
-const static CGFloat kCustomIOSAlertViewDefaultButtonHeight       = 50;
-const static CGFloat kCustomIOSAlertViewDefaultButtonSpacerHeight = 1;
-const static CGFloat kCustomIOSAlertViewCornerRadius              = 7;
+const static CGFloat kCustomIOSAlertViewDefaultButtonHeight       = 45;
+const static CGFloat kCustomIOSAlertViewDefaultButtonSpacerHeight = 0.3f;
+const static CGFloat kCustomIOSAlertViewCornerRadius              = 15;
 
 @implementation CustomIOSAlertView
 
 CGFloat buttonHeight = 0;
 CGFloat buttonSpacerHeight = 0;
+UIColor *divColor;
 
 - (id)init
 {
@@ -28,6 +29,8 @@ CGFloat buttonSpacerHeight = 0;
         self.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
         _useMotionEffects = false;
         _buttonTitles = @[@"OK"];
+        
+        divColor = [UIColor colorWithRed:215.0/255.0 green:215.0/255.0 blue:219.0/255.0 alpha:1.0f];
         
         _buttonColor = [[[UIApplication sharedApplication] delegate] window].tintColor;
         if (!_buttonColor) {
@@ -77,7 +80,7 @@ CGFloat buttonSpacerHeight = 0;
     }
     
     _dialogView.layer.opacity = 0.5f;
-    _dialogView.layer.transform = CATransform3DMakeScale(1.3f, 1.3f, 1.0);
+    _dialogView.layer.transform = CATransform3DMakeScale(1.2f, 1.2f, 1.0);
     
     [UIView animateWithDuration:0.2f delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
@@ -87,7 +90,6 @@ CGFloat buttonSpacerHeight = 0;
                      }
                      completion:NULL
      ];
-    
 }
 
 // Dialog close animation then cleaning and removing the view from the parent
@@ -96,13 +98,11 @@ CGFloat buttonSpacerHeight = 0;
     if (_keepOpen){
         return;
     }
-    CATransform3D currentTransform = _dialogView.layer.transform;
     _dialogView.layer.opacity = 1.0f;
     
     [UIView animateWithDuration:0.2f delay:0.0 options:UIViewAnimationOptionTransitionNone
                      animations:^{
                          self.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.0f];
-                         _dialogView.layer.transform = CATransform3DConcat(currentTransform, CATransform3DMakeScale(0.6f, 0.6f, 1.0));
                          _dialogView.layer.opacity = 0.0f;
                      }
                      completion:^(BOOL finished) {
@@ -135,22 +135,10 @@ CGFloat buttonSpacerHeight = 0;
     // This is the dialog's container; we attach the custom content and the buttons to this one
     UIView *dialogContainer = [[UIView alloc] initWithFrame:CGRectMake((screenSize.width - dialogSize.width) / 2, (screenSize.height - dialogSize.height) / 2, dialogSize.width, dialogSize.height)];
     
-    // First, we style the dialog to match the iOS7 UIAlertView >>>
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-    gradient.frame = dialogContainer.bounds;
-    gradient.colors = [NSArray arrayWithObjects:
-                       (id)[[UIColor colorWithRed:218.0/255.0 green:218.0/255.0 blue:218.0/255.0 alpha:1.0f] CGColor],
-                       (id)[[UIColor colorWithRed:233.0/255.0 green:233.0/255.0 blue:233.0/255.0 alpha:1.0f] CGColor],
-                       (id)[[UIColor colorWithRed:218.0/255.0 green:218.0/255.0 blue:218.0/255.0 alpha:1.0f] CGColor],
-                       nil];
-    
+    dialogContainer.backgroundColor = [UIColor whiteColor];
     CGFloat cornerRadius = kCustomIOSAlertViewCornerRadius;
-    gradient.cornerRadius = cornerRadius;
-    [dialogContainer.layer insertSublayer:gradient atIndex:0];
     
     dialogContainer.layer.cornerRadius = cornerRadius;
-    dialogContainer.layer.borderColor = [[UIColor colorWithRed:198.0/255.0 green:198.0/255.0 blue:198.0/255.0 alpha:1.0f] CGColor];
-    dialogContainer.layer.borderWidth = 1;
     dialogContainer.layer.shadowRadius = cornerRadius + 5;
     dialogContainer.layer.shadowOpacity = 0.1f;
     dialogContainer.layer.shadowOffset = CGSizeMake(0 - (cornerRadius+5)/2, 0 - (cornerRadius+5)/2);
@@ -159,9 +147,8 @@ CGFloat buttonSpacerHeight = 0;
     
     // There is a line above the button
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, dialogContainer.bounds.size.height - buttonHeight - buttonSpacerHeight, dialogContainer.bounds.size.width, buttonSpacerHeight)];
-    lineView.backgroundColor = [UIColor colorWithRed:198.0/255.0 green:198.0/255.0 blue:198.0/255.0 alpha:1.0f];
+    lineView.backgroundColor = divColor;
     [dialogContainer addSubview:lineView];
-    // ^^^
     
     // Add the custom container if there is any
     [dialogContainer addSubview:_containerView];
@@ -191,10 +178,17 @@ CGFloat buttonSpacerHeight = 0;
         [closeButton setTag:i];
         
         [closeButton setTitle:[_buttonTitles objectAtIndex:i] forState:UIControlStateNormal];
-        [closeButton.titleLabel setFont:[UIFont boldSystemFontOfSize:14.0f]];
+        [closeButton.titleLabel setFont:[UIFont systemFontOfSize:17.0f]];
         [closeButton.layer setCornerRadius:kCustomIOSAlertViewCornerRadius];
         
         [container addSubview:closeButton];
+    }
+    
+    CGFloat x = container.frame.size.width / [_buttonTitles count];
+    for (int i=1; i<[_buttonTitles count]; i++) {
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(x*i, container.bounds.size.height - buttonHeight - buttonSpacerHeight, buttonSpacerHeight, buttonHeight)];
+        lineView.backgroundColor = divColor;
+        [container addSubview:lineView];
     }
 }
 
