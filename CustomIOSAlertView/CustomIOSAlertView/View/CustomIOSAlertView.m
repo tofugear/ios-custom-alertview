@@ -92,12 +92,17 @@ UIColor *divColor;
      ];
 }
 
-// Dialog close animation then cleaning and removing the view from the parent
-- (void)close
-{
-    if (_keepOpen){
-        return;
+- (void)customDialogButtonTouchUpInside:(id)sender {
+    
+    if (!_keepOpen) {
+        [self close];
     }
+    if (_onButtonTouchUpInside != NULL) {
+        _onButtonTouchUpInside(self, (int)[sender tag]);
+    }
+}
+
+- (void)close {
     _dialogView.layer.opacity = 1.0f;
     
     [UIView animateWithDuration:0.2f delay:0.0 options:UIViewAnimationOptionTransitionNone
@@ -174,7 +179,7 @@ UIColor *divColor;
         [closeButton setTitleColor:_buttonColor forState:UIControlStateNormal];
         [closeButton setTitleColor:[_buttonColor colorWithAlphaComponent:0.7] forState:UIControlStateHighlighted];
         
-        [closeButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
+        [closeButton addTarget:self action:@selector(customDialogButtonTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
         [closeButton setTag:i];
         
         [closeButton setTitle:[_buttonTitles objectAtIndex:i] forState:UIControlStateNormal];
