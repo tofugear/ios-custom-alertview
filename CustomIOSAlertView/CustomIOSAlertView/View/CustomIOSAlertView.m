@@ -13,7 +13,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 const static CGFloat kCustomIOSAlertViewDefaultButtonHeight       = 45;
-const static CGFloat kCustomIOSAlertViewDefaultButtonSpacerHeight = 0.3f;
+const static CGFloat kCustomIOSAlertViewDefaultButtonSpacerHeight = 1;
 const static CGFloat kCustomIOSAlertViewCornerRadius              = 13;
 
 @implementation CustomIOSAlertView
